@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style type="text/css">
+        #canvas{
+            border: 1px solid #000;
+            background: #000;
+        }
+    </style>
+    <script type="text/javascript">
+        window.onload=function() {
+            var canvas=document.getElementById("canvas");
+            canvas.width=document.documentElement.clientWidth || document.body.clientWidth;
+            canvas.height=document.documentElement.clientHeight || document.body.clientHeight;
+            var context=canvas.getContext("2d");
+
+            function Star(valueX,valueY,R,rotate,color){
+//                context.strokeStyle="#efd174";
+//                context.lineWidth=3;
+                context.fillStyle=color;
+                context.beginPath();
+
+                for(var i=0;i<5;i++){
+                    var X=Math.cos((18 + 72*i-rotate)/180*Math.PI)*R+valueX;
+                    var Y=-Math.sin((18 + 72*i-rotate)/180*Math.PI)*R+valueY;
+                    var x=Math.cos((54 + 72*i-rotate)/180*Math.PI)*R/2+valueX;
+                    var y=-Math.sin((54 + 72*i-rotate)/180*Math.PI)*R/2+valueY;
+                    context.lineTo(X,Y);
+                    context.lineTo(x,y);
+                }
+                context.closePath();
+                context.fill();
+                context.stroke();
+            }
+
+            for(var i=0;i<70;i++){
+                var valueX=parseInt(Math.random()*canvas.width);
+                var valueY=parseInt(Math.random()*canvas.height);
+                var size=parseInt(Math.random()*10+5);
+                var rotate=parseInt(Math.random()*360);
+                var color="rgb("+parseInt(Math.random()*255)+","+parseInt(Math.random()*255)+","+parseInt(Math.random()*255)+")";
+                Star(valueX,valueY,size,rotate,color);
+            }
+        }
+    </script>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+</body>
+</html>
