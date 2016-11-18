@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style type="text/css">
+        body{
+            width: 100%;
+            height: 100%;
+        }
+        #canvas{
+            border: 1px solid #000;
+            background: #000;
+        }
+    </style>
+    <script type="text/javascript">
+        window.onload=function() {
+            var canvas=document.getElementById("canvas");
+            canvas.width=document.documentElement.clientWidth || document.body.clientWidth;
+            canvas.height=document.documentElement.clientHeight || document.body.clientHeight;
+            var context=canvas.getContext("2d");
+
+            function Star(valueX,valueY,R,rotate,color){
+                context.fillStyle=color;
+                context.beginPath();
+
+                for(var i=0;i<5;i++){
+                    var X=Math.cos((18 + 72*i-rotate)/180*Math.PI)*R+valueX;
+                    var Y=-Math.sin((18 + 72*i-rotate)/180*Math.PI)*R+valueY;
+                    var x=Math.cos((54 + 72*i-rotate)/180*Math.PI)*R/2+valueX;
+                    var y=-Math.sin((54 + 72*i-rotate)/180*Math.PI)*R/2+valueY;
+                    context.lineTo(X,Y);
+                    context.lineTo(x,y);
+                }
+                context.closePath();
+                context.fill();
+//                context.stroke();
+            }
+
+            function createStart(context){
+                context.clearRect(0,0,canvas.width,canvas.height);
+
+                var linearGradient=context.createLinearGradient(0,0,0,canvas.height);
+                linearGradient.addColorStop(0.2,"#1d1f65");
+                linearGradient.addColorStop(0.6,"#4387c7");
+                linearGradient.addColorStop(1.0,"#3d40b6");
+                context.fillStyle=linearGradient;
+
+                context.fillRect(0,0,canvas.width,canvas.height);
+                for(var i=0;i<70;i++){
+                    var valueX=parseInt(Math.random()*canvas.width);
+                    var valueY=parseInt(Math.random()*canvas.height-200);
+                    var size=parseInt(Math.random()*10+5);
+                    var rotate=parseInt(Math.random()*360);
+                    var color="rgb("+parseInt(Math.random()*255)+","+parseInt(Math.random()*255)+","+parseInt(Math.random()*255)+")";
+                    Star(valueX,valueY,size,rotate,color);
+                }
+
+                context.beginPath();
+                context.arc(1000,150,80,1.5*Math.PI,0.7*Math.PI);
+                context.arc(1030,160,90,0.7*Math.PI,1.5*Math.PI,true);
+//                context.fillStyle="#f5d957";
+                context.fill();
+                context.stroke();
+                context.closePath();
+
+//                context.beginPath();
+//                context.arc(1000,150,80,0.7*Math.PI,1.5*Math.PI,true);
+//                context.stroke();
+//                context.closePath();
+            }
+
+
+            createStart(context);
+            setInterval(function(){
+                createStart(context);
+            },500)
+        }
+    </script>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+</body>
+</html>

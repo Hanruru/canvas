@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style type="text/css">
+        #canvas{
+            border: 1px solid #000;
+        }
+    </style>
+    <script type="text/javascript">
+        window.onload=function() {
+            var canvas=document.getElementById("canvas");
+            canvas.width=1200;
+            canvas.height=800;
+            var context=canvas.getContext("2d");
+
+            for(var i=0;i<10;i++){
+                context.beginPath();
+                context.arc(50+i*100,60,40,0,2*Math.PI*(i+1)/10); //默认false顺时针
+                context.stroke();
+                context.closePath();
+            }
+
+            for(var i=0;i<10;i++){
+                context.beginPath();
+                context.arc(50+i*100,200,40,0,2*Math.PI*(i+1)/10,true);//true逆时针
+                context.stroke();
+                context.closePath();
+            }
+        }
+    </script>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+</body>
+</html>
