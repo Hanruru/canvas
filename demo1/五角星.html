@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style type="text/css">
+        #canvas{
+            border: 1px solid #000;
+        }
+    </style>
+    <script type="text/javascript">
+        window.onload=function() {
+            var canvas=document.getElementById("canvas");
+            canvas.width=600;
+            canvas.height=600;
+            var context=canvas.getContext("2d");
+
+            context.strokeStyle="#3c3c3c";
+            context.lineWidth=10;
+            context.beginPath();
+
+            for(var i=0;i<5;i++){
+                var X=Math.cos((18 + 72*i)/180*Math.PI)*200+300;
+                var Y=-Math.sin((18 + 72*i)/180*Math.PI)*200+300;
+                var x=Math.cos((54 + 72*i)/180*Math.PI)*100+300;
+                var y=-Math.sin((54 + 72*i)/180*Math.PI)*100+300;
+                context.lineTo(X,Y);
+                context.lineTo(x,y);
+            }
+            context.closePath();
+            context.stroke();
+        }
+    </script>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+</body>
+</html>
