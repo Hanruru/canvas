@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        #canvas{
+            border: 1px solid #E3E3E3;
+        }
+    </style>
+    <script src="js/digit.js"></script>
+    <script>
+        window.onload=function(){
+            var canvas=document.getElementById("canvas");
+            /*可配置的参数*/
+            var window_width=1300;
+            var window_height=600;
+            var radius=8;//点阵圆半径
+            var color="rgb("+Math.round(Math.random()*255)+","+Math.round(Math.random()*255)+","+Math.round(Math.random()*255)+")";
+
+
+            var context=canvas.getContext("2d");
+            canvas.width=window_width;
+            canvas.height=window_height;
+            context.fillStyle=color;
+
+            var ball={x:1000,y:100,radius:radius,color:color,vx:-2,vy:0,g:2};
+
+            function upDate(){
+                ball.x+=ball.vx;
+                ball.y+=ball.vy;
+                ball.vy+=ball.g;
+
+                //碰撞检测
+                if(ball.y>window_height){
+                    ball.y=window_height-ball.radius;
+                    ball.vy=-ball.vy*0.78;
+                }
+            }
+
+
+            function draw(){
+                context.clearRect(0,0,window_width,window_height);
+                context.fillStyle=ball.color;
+                context.beginPath();
+                context.arc(ball.x,ball.y,ball.radius,0,2*Math.PI);
+                context.closePath();
+                context.fill();
+            }
+
+            setInterval(function(){
+                upDate();
+                draw();
+            },33);
+
+
+        }
+    </script>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+</body>
+</html>

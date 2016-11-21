@@ -20,11 +20,13 @@
             var tokenWidth=4;//冒号数字点阵圆的数量
             var margin_top=150;//整体y轴偏移量
             var margin_left=100;//x轴偏移量
+            var color="rgb("+Math.round(Math.random()*255)+","+Math.round(Math.random()*255)+","+Math.round(Math.random()*255)+")";
+
 
             var context=canvas.getContext("2d");
             canvas.width=window_width;
             canvas.height=window_height;
-            context.fillStyle="#33B5E5";
+
 
 //            var hours=14;
 //            var minutes=09;
@@ -33,7 +35,7 @@
             //目标结束时间
             var eDate={
                 year:new Date().getFullYear(),
-                date:23,
+                date:new Date().getDate()+2,
                 hours:0,
                 minutes:0,
                 seconds:0
@@ -46,17 +48,56 @@
             endDate.setMinutes(eDate.minutes);
             endDate.setSeconds(eDate.seconds);
 
+
             function upDate(){
+                //得到下一秒的时间
+                var nextDate = new Date();
+                var nowDate = new Date();
+                nextDate.setSeconds(nowDate.getSeconds()+1);
+                var nextDateObject = {
+                    hours:nextDate.getHours(),
+                    minutes:nextDate.getMinutes(),
+                    seconds:nextDate.getSeconds()
+                }
+                var nowDateObject = {
+                    hours:nowDate.getHours(),
+                    minutes:nowDate.getMinutes(),
+                    seconds:nowDate.getSeconds()
+                }
+
+                //截至到目标时间一共需要多少秒
                 endTime=(endDate.getTime()-(new Date().getTime()))/1000;
                 hours=parseInt(endTime/3600);
                 minutes=parseInt((endTime-(hours*3600))/60);
                 seconds=endTime%60;
+
+
+                if(nextDateObject.seconds % 10 != nowDateObject.seconds % 10){
+                    console.log("秒数的个位存在变化")
+                }
+                if(parseInt(nextDateObject.seconds / 10) != parseInt(nowDateObject.seconds / 10)){
+                    console.log("秒数的十位存在变化")
+                }
+                if(parseInt(nextDateObject.minutes % 10) != parseInt(nowDateObject.minutes % 10)){
+                    console.log("分钟数的个位存在变化")
+                }
+                if(parseInt(nextDateObject.minutes / 10) != parseInt(nowDateObject.minutes / 10)){
+                    console.log("分钟数的十位存在变化")
+                }
+                if(parseInt(nextDateObject.hours % 10) != parseInt(nowDateObject.hours % 10)){
+                    console.log("小时数的个位存在变化")
+                }
+                if(parseInt(nextDateObject.hours / 10) != parseInt(nowDateObject.hours / 10)){
+                    console.log("小时数的十位存在变化")
+                }
             }
 
 
             function draw(){
                 context.clearRect(0,0,window_width,window_height);
 //            drawDigit(0,0,5,context);
+                context.beginPath();
+                context.fillStyle="#33B5E5";
                 drawDigit(0,0,parseInt(hours/10),context);
                 drawDigit(digitWidth*2*(radius+1)+20,0,parseInt(hours%10),context);
                 drawDigit(2*(digitWidth*2*(radius+1)+20),0,10,context);
@@ -65,10 +106,12 @@
                 drawDigit(4*(digitWidth*2*(radius+1)+20) + tokenWidth*2*(radius+1)+20 ,0,10,context);
                 drawDigit(4*(digitWidth*2*(radius+1)+20) + 2*(tokenWidth*2*(radius+1)+20) ,0,parseInt(seconds/10),context);
                 drawDigit(5*(digitWidth*2*(radius+1)+20) + 2*(tokenWidth*2*(radius+1)+20) ,0,parseInt(seconds%10),context);
+                context.closePath();
             }
 
-            upDate();
-            draw();
+
+//            upDate();
+//            draw();
             setInterval(function(){
                 upDate();
                 draw();
