@@ -5,29 +5,82 @@
     <title></title>
     <style>
         #canvas{
-            border: 1px solid #000000;
+            border: 1px solid #E3E3E3;
         }
     </style>
     <script src="js/digit.js"></script>
     <script>
         window.onload=function(){
             var canvas=document.getElementById("canvas");
-            canvas.width=1024;
-            canvas.height=600;
-            var context=canvas.getContext("2d");
-            var r=8;
+            var window_width=1300;
+            var window_height=600;
+            var radius=8;
+            var digitWidth=7;
+            var tokenWidth=4;
+            var margin_top=150;
+            var margin_left=100;
 
+            var context=canvas.getContext("2d");
+            canvas.width=window_width;
+            canvas.height=window_height;
             context.fillStyle="#33B5E5";
-            for(var i=0;i<digit[0].length;i++){
-                for(var j=0;j<digit[0][i].length;j++){
-                    if(digit[0][i][j]==1){
-                        context.beginPath();
-                        context.arc(j*2*(r+1)+(r+1),i*2*(r+1)+(r+1),r,0,2*Math.PI);
-                        context.fill();
-                        context.closePath();
+
+//            var hours=14;
+//            var minutes=09;
+//            var seconds=35;
+
+            setInterval(function(){
+                var date=new Date();
+                var hours= date.getHours();
+                var minutes=date.getMinutes();
+
+                var seconds=date.getSeconds();
+                var eDate={
+                    year:new Date().getFullYear(),
+                    date:23,
+                    hours:0,
+                    minutes:0,
+                    seconds:0
+                };
+
+                var endDate=new Date();
+                endDate.setYear(eDate.year);
+                endDate.setDate(eDate.date);
+                endDate.setHours(eDate.hours);
+                endDate.setMinutes(eDate.minutes);
+                endDate.setSeconds(eDate.seconds);
+
+                var endTime=(endDate.getTime()-(new Date().getTime()))/1000;
+                var hours=parseInt(endTime/3600);
+                var minutes=parseInt((endTime-(hours*3600))/60);
+                var seconds=endTime%60;
+
+
+            context.clearRect(0,0,window_width,window_height)
+//            drawDigit(0,0,5,context);
+            drawDigit(0,0,parseInt(hours/10),context);
+            drawDigit(digitWidth*2*(radius+1)+20,0,hours%10,context);
+            drawDigit(2*(digitWidth*2*(radius+1)+20),0,10,context);
+            drawDigit(2*(digitWidth*2*(radius+1)+20) + tokenWidth*2*(radius+1)+20 ,0,parseInt(minutes/10),context);
+            drawDigit(3*(digitWidth*2*(radius+1)+20) + tokenWidth*2*(radius+1)+20 ,0,minutes%10,context);
+            drawDigit(4*(digitWidth*2*(radius+1)+20) + tokenWidth*2*(radius+1)+20 ,0,10,context);
+            drawDigit(4*(digitWidth*2*(radius+1)+20) + 2*(tokenWidth*2*(radius+1)+20) ,0,parseInt(seconds/10),context);
+            drawDigit(5*(digitWidth*2*(radius+1)+20) + 2*(tokenWidth*2*(radius+1)+20) ,0,seconds%10,context);
+        },1000);
+            function drawDigit(x,y,num,context){
+                for(var i=0;i<digit[num].length;i++){
+                    for(var j=0;j<digit[num][i].length;j++){
+                        if(digit[num][i][j]==1){
+                            context.beginPath();
+                            context.arc(margin_left+x+j*2*(radius+1)+(radius+1),margin_top+y+i*2*(radius+1)+(radius+1),radius,0,2*Math.PI);
+                            context.fill();
+                            context.closePath();
+                        }
                     }
                 }
             }
+
+
         }
     </script>
 </head>
