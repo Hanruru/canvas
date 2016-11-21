@@ -12,13 +12,14 @@
     <script>
         window.onload=function(){
             var canvas=document.getElementById("canvas");
+            /*可配置的参数*/
             var window_width=1300;
             var window_height=600;
-            var radius=8;
-            var digitWidth=7;
-            var tokenWidth=4;
-            var margin_top=150;
-            var margin_left=100;
+            var radius=8;//点阵圆半径
+            var digitWidth=7;//每一个数字点阵圆的数量
+            var tokenWidth=4;//冒号数字点阵圆的数量
+            var margin_top=150;//整体y轴偏移量
+            var margin_left=100;//x轴偏移量
 
             var context=canvas.getContext("2d");
             canvas.width=window_width;
@@ -29,44 +30,51 @@
 //            var minutes=09;
 //            var seconds=35;
 
-            setInterval(function(){
-                var date=new Date();
-                var hours= date.getHours();
-                var minutes=date.getMinutes();
+            //目标结束时间
+            var eDate={
+                year:new Date().getFullYear(),
+                date:23,
+                hours:0,
+                minutes:0,
+                seconds:0
+            };
 
-                var seconds=date.getSeconds();
-                var eDate={
-                    year:new Date().getFullYear(),
-                    date:23,
-                    hours:0,
-                    minutes:0,
-                    seconds:0
-                };
+            var endDate=new Date();
+            endDate.setYear(eDate.year);
+            endDate.setDate(eDate.date);
+            endDate.setHours(eDate.hours);
+            endDate.setMinutes(eDate.minutes);
+            endDate.setSeconds(eDate.seconds);
 
-                var endDate=new Date();
-                endDate.setYear(eDate.year);
-                endDate.setDate(eDate.date);
-                endDate.setHours(eDate.hours);
-                endDate.setMinutes(eDate.minutes);
-                endDate.setSeconds(eDate.seconds);
-
-                var endTime=(endDate.getTime()-(new Date().getTime()))/1000;
-                var hours=parseInt(endTime/3600);
-                var minutes=parseInt((endTime-(hours*3600))/60);
-                var seconds=endTime%60;
+            function upDate(){
+                endTime=(endDate.getTime()-(new Date().getTime()))/1000;
+                hours=parseInt(endTime/3600);
+                minutes=parseInt((endTime-(hours*3600))/60);
+                seconds=endTime%60;
+            }
 
 
-            context.clearRect(0,0,window_width,window_height)
+            function draw(){
+                context.clearRect(0,0,window_width,window_height);
 //            drawDigit(0,0,5,context);
-            drawDigit(0,0,parseInt(hours/10),context);
-            drawDigit(digitWidth*2*(radius+1)+20,0,hours%10,context);
-            drawDigit(2*(digitWidth*2*(radius+1)+20),0,10,context);
-            drawDigit(2*(digitWidth*2*(radius+1)+20) + tokenWidth*2*(radius+1)+20 ,0,parseInt(minutes/10),context);
-            drawDigit(3*(digitWidth*2*(radius+1)+20) + tokenWidth*2*(radius+1)+20 ,0,minutes%10,context);
-            drawDigit(4*(digitWidth*2*(radius+1)+20) + tokenWidth*2*(radius+1)+20 ,0,10,context);
-            drawDigit(4*(digitWidth*2*(radius+1)+20) + 2*(tokenWidth*2*(radius+1)+20) ,0,parseInt(seconds/10),context);
-            drawDigit(5*(digitWidth*2*(radius+1)+20) + 2*(tokenWidth*2*(radius+1)+20) ,0,seconds%10,context);
-        },1000);
+                drawDigit(0,0,parseInt(hours/10),context);
+                drawDigit(digitWidth*2*(radius+1)+20,0,parseInt(hours%10),context);
+                drawDigit(2*(digitWidth*2*(radius+1)+20),0,10,context);
+                drawDigit(2*(digitWidth*2*(radius+1)+20) + tokenWidth*2*(radius+1)+20 ,0,parseInt(minutes/10),context);
+                drawDigit(3*(digitWidth*2*(radius+1)+20) + tokenWidth*2*(radius+1)+20 ,0,parseInt(minutes%10),context);
+                drawDigit(4*(digitWidth*2*(radius+1)+20) + tokenWidth*2*(radius+1)+20 ,0,10,context);
+                drawDigit(4*(digitWidth*2*(radius+1)+20) + 2*(tokenWidth*2*(radius+1)+20) ,0,parseInt(seconds/10),context);
+                drawDigit(5*(digitWidth*2*(radius+1)+20) + 2*(tokenWidth*2*(radius+1)+20) ,0,parseInt(seconds%10),context);
+            }
+
+            upDate();
+            draw();
+            setInterval(function(){
+                upDate();
+                draw();
+            },1000);
+
+
             function drawDigit(x,y,num,context){
                 for(var i=0;i<digit[num].length;i++){
                     for(var j=0;j<digit[num][i].length;j++){
